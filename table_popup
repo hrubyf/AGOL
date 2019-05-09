@@ -1,0 +1,56 @@
+<table style="width: 153px;">
+<tbody>
+<tr>
+<td style="width: 50%;">PSOE</td>
+<td style="width: 50%;">{PSOE_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">PP</td>
+<td style="width: 50%;">{PP_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">Cs</td>
+<td style="width: 50%;">{CS_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">UP</td>
+<td style="width: 50%;">{UP_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">VOX</td>
+<td style="width: 50%;">{VOX_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">ERC-SOBIRANISTES</td>
+<td style="width: 50%;">{ERC_SOB_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">JxCAT-JUNTS</td>
+<td style="width: 50%;">{JXCAT_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">PNV</td>
+<td style="width: 50%;">{PNV_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">EH Bildu</td>
+<td style="width: 50%;">{EH_BILDU_E}</td>
+</tr>
+<tr>
+<td style="width: 50%;">CCa-PNC</td>
+<td style="width: 50%;">{CCA_PNC_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">PRC</td>
+<td style="width: 50%;">{PRC_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">NA+</td>
+<td style="width: 50%;">{NA_Es}</td>
+</tr>
+<tr>
+<td style="width: 50%;">COMPROM&Iacute;S 2019</td>
+<td style="width: 50%;">{COMPROM_Es}</td>
+</tr>
+</tbody>
+</table>
