@@ -99,7 +99,7 @@ Quellcode
 <details>
 <summary>LISTE (waffle chart)</summary>
 
-![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_2.png?token=GHSAT0AAAAAAENZ7S4FMZOUMKSTC73PDWDM2W7FNXA)
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_2.png?token=GHSAT0AAAAAAENZ7S4FHNYLLNTNO4YJVS622W7F5KA)
 
 Erweiterte Formatierung
 ```javascript
