@@ -94,3 +94,85 @@ Quellcode
 </p>
 ```
 </details>
+
+
+<details>
+<summary>LISTE (waffle chart)</summary>
+
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_2.png?token=GHSAT0AAAAAAENZ7S4FMZOUMKSTC73PDWDM2W7FNXA)
+
+Erweiterte Formatierung
+```javascript
+// 1. Sicheres Abgreifen des Indikatorwerts
+var  rawVal = $datapoint["S4"];
+var  quote = Number(DefaultValue(rawVal, 0));
+
+// Auf ganze Punkte von 0 bis 100 beschränken
+var  anzahlAktiv = Floor(Min(100, Max(0, quote)));
+
+// 2. Akzentfarbe ermitteln
+var  statusWert = DefaultValue($datapoint["SK"], "");
+var  aktiveFarbe = "#fc8181"; // Standard: Rot
+
+if (statusWert == "sehr niedrig") {
+	aktiveFarbe = "#b23838";
+} else  if (statusWert == "niedrig") {
+	aktiveFarbe = "#e69838";
+} else  if (statusWert == "mittel") {
+	aktiveFarbe = "#73b273";
+} else  if (statusWert == "hoch") {
+	aktiveFarbe = "#388238";
+}
+
+var  inaktiveFarbe = "#334155"; // Dunkelgrau für inaktive Kacheln
+
+// 3. 10x10 SVG-Raster generieren
+var  svgRects = "";
+var  kachelIndex = 0;
+
+for (var  r  =  0;  r  <  10;  r++) {
+	var  yPos = r * 6;
+	for (var  c  =  0;  c  <  10;  c++) {
+		var  xPos = c * 6;
+		kachelIndex += 1;
+
+		var  f = IIf(kachelIndex <= anzahlAktiv, aktiveFarbe, inaktiveFarbe);
+		svgRects += "<rect x='" + Text(xPos) + "' y='" + Text(yPos) + "' width='4' height='4' rx='1' fill='" + f + "' />";
+		}
+}
+
+var  svgCode = "<svg viewBox='0 0 58 58' width='58' height='58' style='display:block;'>" + svgRects + "</svg>";
+
+// 4. Rückgabe für das Listen-Profil
+return {
+	textColor: "",
+	backgroundColor: "",
+	separatorColor: "",
+	attributes: {
+			waffleChart: svgCode
+	}
+};
+```
+
+Quellcode
+```html
+<div style="align-items:center;border-bottom:1px solid #2d3748;display:flex;justify-content:space-between;padding:6px 0;">
+    <div style="flex:1;padding-right:12px;">
+        <div style="color:#f8fafc;font-size:0.95em;margin-bottom:2px;">
+            <strong>{field/Name}</strong>
+        </div>
+        <div style="color:#94a3b8;font-size:0.8em;">
+            Status: <span style="color:#cbd5e1;">{field/SK}</span>
+        </div>
+        <div style="color:#f8fafc;font-size:0.85em;margin-top:2px;">
+            <strong>Kinderarmut: {field/S4} %</strong>
+        </div>
+    </div>
+    <div style="flex-shrink:0;">
+        {expression/waffleChart}
+    </div>
+</div>
+```
+</details>
+
+
