@@ -58,7 +58,7 @@ return {
 <details>
 <summary>LISTE (bullet points)</summary>
 
-![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_1.png?token=GHSAT0AAAAAAENZ7S4FUPLNB6CMBOBWOPD62W7FFXQ)
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_1.png)
 
 Erweiterte Formatierung
 ```javascript
@@ -99,7 +99,7 @@ Quellcode
 <details>
 <summary>LISTE (waffle chart)</summary>
 
-![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_2.png?token=GHSAT0AAAAAAENZ7S4FHNYLLNTNO4YJVS622W7F5KA)
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_2.png)
 
 Erweiterte Formatierung
 ```javascript
@@ -179,7 +179,7 @@ Quellcode
 <details>
 <summary>Liste (Piktogrammreihe)</summary>
 
-![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_3.png?token=GHSAT0AAAAAAENZ7S4EYRQ3EBKHQ47SZJPM2W7FY3A)
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_3.png)
 
 Erweiterte Formatierung
 ```javascript
