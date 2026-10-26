@@ -176,3 +176,67 @@ Quellcode
 </details>
 
 
+<details>
+<summary>Liste (Piktogrammreihe)</summary>
+
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_3.png?token=GHSAT0AAAAAAENZ7S4EYRQ3EBKHQ47SZJPM2W7FY3A)
+
+Erweiterte Formatierung
+```javascript
+// Zu visualisierende Quote (z. B. S4: Kinderarmut oder S1: Arbeitslosigkeit)
+var  quote = $datapoint.S4;
+
+// Umrechnung auf eine 10er-Basis (z. B. 23.4% -> 2 Personen aktiv)
+// Bei z. B. 100er-Basis teilt man durch 1, hier runden wir auf ganze Personen von 10:
+var  aktiveIcons = Round(quote / 10.0, 0);
+ 
+// Farben definieren
+var  farbeAktiv = "#f87171"; // Warmes Korallenrot für betroffene Personen
+var  farbeInaktiv = "#334155"; // Dunkles Schiefergrau für den Hintergrund/Rest
+  
+// SVG-Pfad eines schlanken Personen-Piktogramms (Kopf + Körper)
+var  iconPath = "M9 4a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-7 14c0-2.8 3.1-5 7-5s7 2.2 7 5v1H2v-1z";
+  
+// Dynamische SVG-Zeile aufbauen (10 Personen nebeneinander)
+var  svgIcons = '<svg viewBox="0 0 200 24" width="100%" height="22" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg">';
+  
+for (var  i  =  0;  i  <  10;  i++) {
+	// Jedes Icon um 20 Einheiten nach rechts verschieben
+	var  xOffset = i * 20;
+	var  aktuelleFarbe = farbeInaktiv;
+
+	if (i < aktiveIcons) {
+		aktuelleFarbe = farbeAktiv;
+	}
+
+// Gruppe mit Verschiebung und Personen-Pfad
+	svgIcons += '<g transform="translate(' + Text(xOffset) + ', 2)">';
+	svgIcons += '<path d="' + iconPath + '" fill="' + aktuelleFarbe + '" />';
+	svgIcons += '</g>';
+}
+ 
+svgIcons += '</svg>';
+  
+return {
+	attributes: {
+		pictogramChart: svgIcons,
+		anzahlText: Text(aktiveIcons) + " von 10 Kindern",
+		quoteFormatiert: Text(quote, "#,##0.0") + " %"
+	}
+};
+```
+
+Quellcode
+```html
+<div style="border-bottom:1px solid #2d3748;margin-bottom:8px;padding-bottom:6px;">
+    <div style="align-items:baseline;display:flex;font-size:0.9em;justify-content:space-between;margin-bottom:4px;">
+        <strong>{field/Name}</strong> <span style="color:#cbd5e1;"><span style="font-size:0.85em;">{expression/quoteFormatiert} </span></span><span style="color:#94a3b8;"><span style="font-size:0.9em;margin-left:4px;">({expression/anzahlText})</span></span><span style="color:#cbd5e1;"><span style="font-size:0.85em;">&nbsp;</span></span>
+    </div>
+    <div style="padding:2px 0;width:100%;">
+        {expression/pictogramChart}
+    </div>
+</div>
+```
+</details>
+
+
