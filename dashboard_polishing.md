@@ -54,3 +54,43 @@ return {
 ```
 </details>
 
+
+<details>
+<summary>LISTE (bullet points)</summary>
+
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_1.png?token=GHSAT0AAAAAAENZ7S4FUPLNB6CMBOBWOPD62W7FFXQ)
+
+Erweiterte Formatierung
+```javascript
+// MSS-Statusfarben zuordnen
+var  c = "#73b273"; // Standard/Mittel
+
+if ($datapoint.SK == "sehr niedrig") {
+	c = "#b23838"; // Rot
+} else  if ($datapoint.SK == "niedrig") {
+	c = "#e69838"; // Orange/Ocker
+} else  if ($datapoint.SK == "hoch") {
+	c = "#388238"; // Dunkelgrün
+}
+
+return {
+	textColor: '',
+	backgroundColor: '',
+	separatorColor: '',
+	// WICHTIG: Hier wird die Variable an das HTML weitergereicht:
+	attributes: {
+	statusFarbe: c
+	}
+}
+```
+
+Quellcode
+```html
+<p>
+    <span style="color:{expression/statusFarbe};"><span style="font-size:1.2em;vertical-align:middle;">●</span></span> <strong>{field/Name}</strong>
+</p>
+<p style="color:#a0aec0;font-size:0.85em;margin-top:2px;">
+    Status: {field/SK} | SGB II: {field/S1} %
+</p>
+```
+</details>
