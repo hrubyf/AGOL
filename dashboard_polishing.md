@@ -1,7 +1,7 @@
 <details>
 <summary>INDIKATOR</summary>
 
-![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/indikator.png?token=GHSAT0AAAAAAENZ7S4EBAZVYYYVJALEDWZY2W7EYAQ)
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/indikator.png)
 
 ```javascript
 var  reference = 4.7;
