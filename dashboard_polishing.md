@@ -177,7 +177,7 @@ Quellcode
 
 
 <details>
-<summary>Liste (Piktogrammreihe)</summary>
+<summary>LISTE (Piktogrammreihe)</summary>
 
 ![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/liste_3.png)
 
