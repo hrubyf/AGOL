@@ -193,8 +193,7 @@ var  headerHtml = "<div style='display:flex; gap:8px; margin-bottom:12px; font-s
 				"<span style='background:" + bgStatus + "; color:#fff; padding:3px 8px; border-radius:4px;'>Status: " + Proper(sk) + "</span>" +
 				"<span style='background:#f0f0f0; color:#333; padding:3px 8px; border-radius:4px; border:1px solid #ccc;'>Dynamik: " + iconDyn + "</span>" +
 				"</div>";
- 
-/
+
 // 2. Robuster Flexbox-Divergenzbalken (funktioniert ohne 'position: absolute')
 function  renderDivergingBar(val, maxRange) {
 	if (IsEmpty(val)) {
