@@ -1,0 +1,82 @@
+<details>
+<summary>Liste bullet points</summary>
+
+![enter image description here](https://raw.githubusercontent.com/hrubyf/AGOL/refs/heads/master/popup_1.png)
+
+Erweiterte Formatierung
+```javascript
+// 1. Status- und Dynamik-Badges
+var  sk = $feature.SK;
+var  dk = $feature.DK;
+
+var  bgStatus = When(
+	sk == "hoch", "#08ac1bff",
+	sk == "mittel", "#abdda4",
+	sk == "niedrig", "#fdae61",
+	sk == "sehr niedrig", "#d7191c",
+	"#cccccc"
+);
+
+var  iconDyn = When(
+	dk == "positiv", "↗ positiv",
+	dk == "negativ", "↘ negativ",
+	"→ stabil"
+);
+
+var  headerHtml = "<div style='display:flex; gap:8px; margin-bottom:12px; font-size:12px; font-weight:600;'>" +
+	"<span style='background:" + bgStatus + "; color:#fff; padding:3px 8px; border-radius:4px;'>Status: " + Proper(sk) + "</span>" +
+	"<span style='background:#f0f0f0; color:#333; padding:3px 8px; border-radius:4px; border:1px solid #ccc;'>Dynamik: " + iconDyn + "</span>" +
+	"</div>";
+
+// 2. Formatierungsfunktionen
+function  formatChange(val) {
+	if (IsEmpty(val)) return  "–";
+	var  num = Round(val, 2);
+	var  sign = IIf(num > 0, "+", "");
+	var  col = When(
+		num > 0, "#b30000",
+		num < 0, "#1b7837",
+		"#555555"
+	);
+	var  formatted = sign + Text(num, "#,##0.00") + " %-Pkt.";
+	return  "<span style='color:" + col + "; font-weight:600;'>" + formatted + "</span>";
+}
+
+function  formatStatus(val) {
+	if (IsEmpty(val)) return  "–";
+	return  Text(Round(val, 2), "#,##0.00") + " %";
+}
+
+// 3. Tabelle
+var  rows = [
+	{ label: "Arbeitslose (SGB II)", s: $feature.S1, d: $feature.D1 },
+	{ label: "Kinder v. Alleinerziehenden", s: $feature.S2, d: $feature.D2 },
+	{ label: "Transferbezieher (SGB II/XII)", s: $feature.S3, d: $feature.D3 },
+	{ label: "Transfer unter 15 Jahren", s: $feature.S4, d: $feature.D4 }
+];
+
+var  tableHtml = "<table style='width:100%; border-collapse:collapse; font-size:12px;'>" +
+				"<tr style='border-bottom:1px solid #ddd; color:#666; text-align:left;'>" +
+				"<th style='padding:4px 0;'>Indikator</th>" +
+				"<th style='padding:4px; text-align:right;'>Status</th>" +
+				"<th style='padding:4px 0; text-align:right;'>Entwicklung</th>" +
+				"</tr>";
+
+for (var  i  =  0;  i  <  Count(rows); i++) {
+	var  r = rows[i];
+	tableHtml += "<tr style='border-bottom:1px solid #eee;'>" +
+				"<td style='padding:6px 0;'>" + r.label + "</td>" +
+				"<td style='padding:6px 4px; text-align:right;'>" + formatStatus(r.s) + "</td>" +
+				"<td style='padding:6px 0; text-align:right;'>" + formatChange(r.d) + "</td>" +
+				"</tr>";
+}
+tableHtml += "</table>";
+
+// 4. Rückgabe als formatierter Inhalt
+return {
+	type: "text",
+	text: headerHtml + tableHtml
+};
+```
+</details>
+
