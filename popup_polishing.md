@@ -194,52 +194,86 @@ var  headerHtml = "<div style='display:flex; gap:8px; margin-bottom:12px; font-s
 				"<span style='background:#f0f0f0; color:#333; padding:3px 8px; border-radius:4px; border:1px solid #ccc;'>Dynamik: " + iconDyn + "</span>" +
 				"</div>";
  
-// 2. Hilfsfunktion für die Zeilen (Balken ohne Kommafehler im CSS)
-function  renderMetricRow(label, sVal, maxVal, dVal) {
-	if (IsEmpty(sVal)) return  "";
-
-	// Ganzzahlig gerundeter Prozentsatz verhindert das CSS-Kommaproblem
-	var  pct = Text(Round(Min((sVal / maxVal) * 100, 100), 0), "#0");
-	var  sFormatted = Text(Round(sVal, 2), "#,##0.00") + " %";
-
-	// Vorzeichen und Farbkodierung der Dynamik
-	var  dFormatted = "–";
-	var  dCol = "#555555";
-	if (!IsEmpty(dVal)) {
-		var  dNum = Round(dVal, 2);
-		var  sign = IIf(dNum > 0, "+", "");
-		dCol = When(dNum > 0, "#b30000", dNum < 0, "#1b7837", "#555555");
-		dFormatted = sign + Text(dNum, "#,##0.00") + " %-Pkt.";
+/
+// 2. Robuster Flexbox-Divergenzbalken (funktioniert ohne 'position: absolute')
+function  renderDivergingBar(val, maxRange) {
+	if (IsEmpty(val)) {
+		return  "<div style='color:#999; font-size:11px; text-align:center;'>–</div>";
 	}
   
-	return  "<tr style='border-bottom:1px solid #eee;'>" +
-			"<td style='padding:6px 0; width:36%; font-size:12px;'>" + label + "</td>" +
-			"<td style='padding:6px 8px; width:38%;'>" +
-					"<div style='background:#eaeaea; height:8px; border-radius:4px; overflow:hidden; margin-bottom:2px;'>" +
-					"<div style='background:#3182bd; width:" + pct + "%; height:100%;'></div>" +
+	var  num = Round(val, 2);
+	var  clamped = Max(Min(num, maxRange), -maxRange);
+  
+	// Breite in Prozent der jeweiligen 50%-Hälfte (max. 95%)
+	var  barWidth = Text(Round((Abs(clamped) / maxRange) * 95, 0), "#0");
+  
+	// Farbsemantik MSS: Sinken = grün (#1b7837), Steigen = rot (#b30000), 0 = grau
+	var  col = When(
+		num > 0, "#b30000",
+		num < 0, "#1b7837",
+		"#666666"
+	);
+  
+	var  sign = IIf(num > 0, "+", "");
+	var  formattedText = sign + Text(num, "#,##0.00") + " %-Pkt.";
+  
+	// Linker Balken (wächst nach links) vs. rechter Balken (wächst nach rechts)
+	var  leftBar = "";
+	var  rightBar = "";
+  
+	if (num < 0) {
+		leftBar = "<div style='width:" + barWidth + "%; height:10px; background:" + col + "; border-radius:2px 0 0 2px;'></div>";
+	} else  if (num > 0) {
+		rightBar = "<div style='width:" + barWidth + "%; height:10px; background:" + col + "; border-radius:0 2px 2px 0;'></div>";
+	}
+
+	var  barHtml = "<div style='display:flex; width:100%; height:14px; background:#f2f2f2; border-radius:3px; padding:2px 0; box-sizing:border-box;'>" +
+					// Linke Hälfte (50%): Ausrichtung nach rechts (flex-end) stößt an die Mittellinie
+					"<div style='width:50%; height:100%; display:flex; justify-content:flex-end; border-right:1px solid #777; box-sizing:border-box;'>" +
+					leftBar +
 				"</div>" +
-				"<div style='font-size:11px; color:#444; text-align:right;'>" + sFormatted + "</div>" +
+					// Rechte Hälfte (50%): Ausrichtung nach links (flex-start) startet an der Mittellinie
+					"<div style='width:50%; height:100%; display:flex; justify-content:flex-start; box-sizing:border-box;'>" +
+					rightBar +
+					"</div>" +
+					"</div>" +
+					"<div style='font-size:11px; font-weight:600; text-align:center; color:" + col + "; margin-top:2px;'>" +
+						formattedText +
+					"</div>";
+ 
+	return  barHtml;
+}
+  
+// 3. Zeilenaufbau für die Tabelle
+function  renderRow(label, sVal, dVal, maxRange) {
+	if (IsEmpty(sVal)) return  "";
+	var  sFormatted = Text(Round(sVal, 2), "#,##0.00") + " %";
+
+	return  "<tr style='border-bottom:1px solid #eee;'>" +
+			"<td style='padding:8px 0; width:34%; font-size:12px; vertical-align:middle;'>" + label + "</td>" +
+			"<td style='padding:8px 6px; width:22%; font-size:12px; font-weight:600; text-align:right; vertical-align:middle; color:#333;'>" +
+				sFormatted +
 			"</td>" +
-			"<td style='padding:6px 0; width:26%; text-align:right; font-size:12px; font-weight:600; color:" + dCol + ";'>" +
-				dFormatted +
+			"<td style='padding:8px 0 8px 8px; width:44%; vertical-align:middle;'>" +
+				renderDivergingBar(dVal, maxRange) +
 			"</td>" +
 			"</tr>";
 }
- 
-// 3. Tabellengerüst mit Referenz-Maximalwerten für Berlin
+
+// 4. Tabellengerüst mit kalibrierten Skalenbereichen (maxRange) für D1-D4
 var  tableHtml = "<table style='width:100%; border-collapse:collapse;'>" +
 				"<tr style='border-bottom:1px solid #ccc; font-size:11px; color:#777; text-align:left;'>" +
 				"<th style='padding:4px 0;'>Indikator</th>" +
-				"<th style='padding:4px 8px; text-align:center;'>Status</th>" +
-				"<th style='padding:4px 0; text-align:right;'>Δ Trend</th>" +
+				"<th style='padding:4px 6px; text-align:right;'>Status</th>" +
+				"<th style='padding:4px 0; text-align:center;'>Δ Dynamik (− / +)</th>" +
 				"</tr>" +
-				renderMetricRow("Arbeitslose (SGB II)", $feature.S1, 17.0, $feature.D1) +
-				renderMetricRow("Kinder v. Alleinerz.", $feature.S2, 47.0, $feature.D2) +
-				renderMetricRow("Transfer (SGB II/XII)", $feature.S3, 36.0, $feature.D3) +
-				renderMetricRow("Transfer < 15 Jahre", $feature.S4, 65.0, $feature.D4) +
+				renderRow("Arbeitslose (SGB II)", $feature.S1, $feature.D1, 3.0) +
+				renderRow("Kinder v. Alleinerz.", $feature.S2, $feature.D2, 10.0) +
+				renderRow("Transfer (SGB II/XII)", $feature.S3, $feature.D3, 5.0) +
+				renderRow("Transfer < 15 Jahre", $feature.S4, $feature.D4, 15.0) +
 				"</table>";
   
-// 4. Strukturierte Rückgabe für das Arcade-Inhaltselement
+// 5. Strukturierte Rückgabe für Arcade-Inhaltselement
 return {
 	type: "text",
 	text: headerHtml + tableHtml
